@@ -1,0 +1,10 @@
+{
+  "masri_mt_train": {
+    "file_name": "train.json",
+    "columns": {"prompt": "instruction", "query": "input", "response": "output"}
+  },
+  "masri_mt_eval": {
+    "file_name": "test.json",
+    "columns": {"prompt": "instruction", "query": "input", "response": "output"}
+  }
+}
