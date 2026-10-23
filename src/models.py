@@ -27,6 +27,13 @@ class Tokenizer(Base):
         )
         return tokens
     
+    @staticmethod
+    def construct_prompt(role:str,prompt:str):
+         return{
+              "role":role,
+              "content":prompt
+         }
+        
     def decode(self,ids):
         response=self.tokenizer.decode(
             ids,
