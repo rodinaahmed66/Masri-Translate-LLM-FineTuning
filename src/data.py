@@ -1,4 +1,5 @@
 import re
+from typing import List
 from datasets import Dataset, DatasetDict, load_dataset
 
 AR = re.compile(r"[\u0600-\u06FF]")
@@ -35,7 +36,7 @@ class DataLoader:
         return True
 
     @staticmethod
-    def is_duplicate(dataset) -> list:
+    def is_duplicate(dataset) -> List:
         seen, keep = set(), []
         for i, en in enumerate(dataset["English"]):
             if en not in seen:
