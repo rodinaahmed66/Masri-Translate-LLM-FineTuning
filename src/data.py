@@ -3,6 +3,7 @@ from datasets import Dataset, DatasetDict, load_dataset
 
 AR = re.compile(r"[\u0600-\u06FF]")
 LAT = re.compile(r"[A-Za-z]")
+SOUND_TAGS = re.compile(r"\[[^\]\n]{1,30}\]")
 
 
 class DataLoader:
@@ -17,21 +18,31 @@ class DataLoader:
     def norm(text: str) -> str:
         return re.sub(r"\s+", " ", text).strip()
 
-    def data_prepare(self, example: dict) -> bool:
-        ar = self.norm(example["Arabic"])
-        en = self.norm(example["English"])
-        if not ar or not en:
+    def data_prepare(self, dataset: dict) -> dict:
+        """Use with ds.map(): clean the text."""
+        ar = self.norm(SOUND_TAGS.sub(" ", dataset["Arabic"]))
+        en = self.norm(SOUND_TAGS.sub(" ", dataset["English"])).lower()
+        return {"Arabic": ar, "English": en}
+
+    @staticmethod
+    def is_valid(dataset: dict) -> bool:
+        en, ar = dataset["English"], dataset["Arabic"]
+        if not en or not ar:
             return False
-        if len(AR.findall(ar)) < 0.5 * len(ar.replace(" ", "")):
-            return False
-        if len(LAT.findall(en)) < 0.5 * len(en.replace(" ", "")):
-            return False
-        ratio = len(ar) / max(len(en), 1)
-        if ratio < 0.3 or ratio > 3:
-            return False
-        if len(ar) > 600 or len(en) > 600:
+        n_ar = len(AR.findall(ar))
+        if n_ar == 0 or len(LAT.findall(ar)) > n_ar:
             return False
         return True
 
-    def split(self, ds: Dataset, seed: int = 42) -> dict[str, Dataset]:
-        return ds.train_test_split(test_size=self.test_size, seed=seed)
+    @staticmethod
+    def is_duplicate(dataset) -> list:
+        seen, keep = set(), []
+        for i, en in enumerate(dataset["English"]):
+            if en not in seen:
+                seen.add(en)
+                keep.append(i)
+        return keep
+
+  
+    def split(self, dataset: Dataset, seed: int = 42) -> dict[str, Dataset]:
+        return dataset.train_test_split(test_size=self.test_size, seed=seed)
