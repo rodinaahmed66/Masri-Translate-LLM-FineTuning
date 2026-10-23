@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     DATA_NAME: str
     TEST_SIZE: float 
     BASE_MODEL_ID:str
+    TOKENIZER_MAX_LENGTH:int
 
 
 def get_settings():
