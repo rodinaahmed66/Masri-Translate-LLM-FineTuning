@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     TOKENIZER_MAX_LENGTH:int
     WANDB_API_KEY:str
     PROJECT_NAME:str
+    HF_TOKEN:str
 
 
 def get_settings():

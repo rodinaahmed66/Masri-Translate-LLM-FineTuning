@@ -12,13 +12,15 @@ requires-python = ">=3.10"
 dependencies = [
   "datasets>=2.19",
   "pydantic>=2",
+  "pydantic-settings>=2",
   "pyyaml>=6",
+  "transformers>=4.44",
+  "huggingface_hub>=0.23",
 ]
 
 [project.optional-dependencies]
 train = [
   "torch>=2.2",
-  "transformers>=4.44",
   "llamafactory[torch,metrics]",
   "wandb>=0.17",
 ]
