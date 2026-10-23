@@ -20,7 +20,7 @@ train = [
   "torch>=2.2",
   "transformers>=4.44",
   "llamafactory[torch,metrics]",
-  "mlflow>=2.14",
+  "wandb>=0.17",
 ]
 metrics = [
   "sacrebleu",
