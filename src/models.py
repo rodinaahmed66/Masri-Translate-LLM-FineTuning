@@ -9,6 +9,8 @@ class Base:
 
 class Tokenizer(Base):
     def __init__(self):
+        
+        super().__init__()
         self.tokenizer = AutoTokenizer.from_pretrained(self.setting.BASE_MODEL_ID)
     
     def tokenize(self,text):
