@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     TEST_SIZE: float 
     BASE_MODEL_ID:str
     TOKENIZER_MAX_LENGTH:int
+    WANDB_API_KEY:str
+    PROJECT_NAME:str
 
 
 def get_settings():
