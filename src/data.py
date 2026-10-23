@@ -44,5 +44,5 @@ class DataLoader:
         return keep
 
   
-    def split(self, dataset: Dataset, seed: int = 42) -> Dataset:
+    def split(self, dataset: Dataset, seed: int = 42) -> DatasetDict:
         return dataset.train_test_split(test_size=self.test_size, seed=seed)

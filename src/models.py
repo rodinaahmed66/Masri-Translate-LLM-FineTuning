@@ -1,4 +1,4 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import  AutoTokenizer
 from configs.config import get_settings
 
 class Base:
@@ -22,7 +22,8 @@ class Tokenizer(Base):
             formated_text,
             tokenize=True,
             max_length=self.setting.TOKENIZER_MAX_LENGTH,
-            return_tensors="pt"
+            return_tensors="pt",
+            padding="max_length"
         )
         return tokens
     
