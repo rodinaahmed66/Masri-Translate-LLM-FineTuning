@@ -34,3 +34,11 @@ serve = [
   "fastapi>=0.110",
   "uvicorn[standard]>=0.29",
 ]
+dev = [
+  "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra"
