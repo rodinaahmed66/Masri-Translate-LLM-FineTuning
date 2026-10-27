@@ -3,7 +3,9 @@ from src.scheme import to_alpaca
 
 def test_alpaca():
     ds = {"Arabic": ["ازيك"], "English": ["hello"]}
-    assert to_alpaca(ds, "T") == [{"instruction": "T", "input": "hello", "output": "ازيك"}]
+    assert to_alpaca(ds, "T") == [
+        {"instruction": "T", "input": "hello", "output": "ازيك"}
+    ]
 
 
 def test_alpaca_multiple():
