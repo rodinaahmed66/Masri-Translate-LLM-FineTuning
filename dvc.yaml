@@ -1,0 +1,46 @@
+stages:
+  preprocess:
+    cmd: python -m src.preprocess
+    deps:
+      - src/preprocess.py
+      - src/data.py
+      - src/scheme.py
+      - src/models.py
+      - params.yaml
+    params:
+      - DATA_NAME
+      - TEST_SIZE
+      - TOKENIZER_MAX_LENGTH
+    outs:
+      - data/train.json
+      - data/test.json
+
+  train:
+    cmd: python -m src.train
+    deps:
+      - src/train.py
+      - src/models.py
+      - data/train.json
+      - data/test.json
+      - params.yaml
+    params:
+      - BASE_MODEL_ID
+      - LORA_R
+      - LORA_ALPHA
+      - LEARNING_RATE
+      - NUM_EPOCHS
+      - BATCH_SIZE
+      - GRAD_ACCUM
+      - MAX_SEQ_LENGTH
+    outs:
+      - models/
+
+  eval:
+    cmd: python -m src.evaluate
+    deps:
+      - src/evaluate.py
+      - models/
+      - data/test.json
+      - params.yaml
+    metrics:
+      - metrics/eval.json
