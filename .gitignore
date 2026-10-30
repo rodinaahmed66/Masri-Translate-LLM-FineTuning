@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project artifacts (track with DVC, not git)
+/saves/
+/data/train.json
+/data/test.json
+/data/cache/
+/models/lora-adapter/*
+!/models/lora-adapter/.gitkeep
+wandb/
+.dvc/cache/
+.dvc/tmp/
