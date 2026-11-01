@@ -1,5 +1,6 @@
 import re
 from typing import List
+
 from datasets import Dataset, DatasetDict, load_dataset
 
 AR = re.compile(r"[\u0600-\u06FF]")
