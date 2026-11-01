@@ -1,0 +1,55 @@
+stages:
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+      - src/prepare.py
+      - src/data.py
+      - src/scheme.py
+      - src/models.py
+      - configs/config.py
+    outs:
+      - data/train.json
+      - data/test.json
+
+  train:
+    cmd: llamafactory-cli train configs/train.yaml
+    deps:
+      - data/train.json
+      - data/dataset_info.json
+    params:
+      - configs/train.yaml:
+          - learning_rate
+          - num_train_epochs
+          - lora_rank
+          - cutoff_len
+          - per_device_train_batch_size
+          - gradient_accumulation_steps
+          - warmup_ratio
+    outs:
+      - saves/exp1/lora:
+          cache: false
+
+  predict:
+    cmd: llamafactory-cli train configs/eval.yaml
+    deps:
+      - data/test.json
+      - data/dataset_info.json
+      - saves/exp1/lora
+    params:
+      - configs/eval.yaml:
+          - cutoff_len
+          - max_new_tokens
+          - per_device_eval_batch_size
+          - do_sample
+    outs:
+      - saves/exp1/eval/generated_predictions.jsonl:
+          cache: false
+
+  metrics:
+    cmd: python -m src.evaluate
+    deps:
+      - src/evaluate.py
+      - saves/exp1/eval/generated_predictions.jsonl
+    metrics:
+      - saves/exp1/eval/metrics.json:
+          cache: false
