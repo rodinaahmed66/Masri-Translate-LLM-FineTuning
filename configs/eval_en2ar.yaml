@@ -4,7 +4,7 @@ stage: sft
 do_predict: true
 finetuning_type: lora
 template: qwen
-eval_dataset: masri_mt_eval
+eval_dataset: masri_mt_eval_en2ar
 dataset_dir: data
 cutoff_len: 512
 per_device_eval_batch_size: 4
@@ -12,5 +12,5 @@ predict_with_generate: true
 max_new_tokens: 384
 fp16: true
 do_sample: false
-output_dir: saves/exp1/eval
+output_dir: saves/exp1/eval_en2ar
 overwrite_output_dir: true

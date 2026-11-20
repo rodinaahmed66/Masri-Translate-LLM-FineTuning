@@ -3,17 +3,30 @@ import json
 from configs.config import get_settings
 from src.data import DataLoader
 from src.models import Tokenizer
-from src.scheme import to_alpaca
-
-INSTR = "Translate the following English text into Egyptian Arabic."
+from src.scheme import INSTR_AR2EN, INSTR_EN2AR, to_alpaca, to_alpaca_bidirectional
 
 
 def add_length(tokenizer: Tokenizer, row: dict) -> dict:
-    messages = [
-        tokenizer.construct_prompt("user", f"{INSTR}\n\n{row['English']}"),
+    """Length of the longer of the two prompt directions for a sentence pair."""
+    en2ar = [
+        tokenizer.construct_prompt("user", f"{INSTR_EN2AR}\n\n{row['English']}"),
         tokenizer.construct_prompt("assistant", row["Arabic"]),
     ]
-    return {"length": tokenizer.count_tokens(messages)}
+    ar2en = [
+        tokenizer.construct_prompt("user", f"{INSTR_AR2EN}\n\n{row['Arabic']}"),
+        tokenizer.construct_prompt("assistant", row["English"]),
+    ]
+    return {
+        "length": max(
+            tokenizer.count_tokens(en2ar),
+            tokenizer.count_tokens(ar2en),
+        )
+    }
+
+
+def write_json(path: str, rows: list) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
 
 
 def main():
@@ -32,9 +45,9 @@ def main():
 
     splits = loader.split(data)
 
-    for name in ("train", "test"):
-        with open(f"data/{name}.json", "w", encoding="utf-8") as f:
-            json.dump(to_alpaca(splits[name], INSTR), f, ensure_ascii=False, indent=2)
+    write_json("data/train.json", to_alpaca_bidirectional(splits["train"]))
+    write_json("data/test_en2ar.json", to_alpaca(splits["test"], INSTR_EN2AR))
+    write_json("data/test_ar2en.json", to_alpaca(splits["test"], INSTR_AR2EN))
 
 
 if __name__ == "__main__":
