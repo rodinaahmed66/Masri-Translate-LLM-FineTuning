@@ -7,7 +7,6 @@ import sacrebleu
 from configs.config import get_settings
 
 
-
 def load_data(filepath):
     preds, refs = [], []
     with open(filepath, encoding="utf-8") as f:
