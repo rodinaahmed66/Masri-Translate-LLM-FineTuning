@@ -228,3 +228,8 @@ __marimo__/
 wandb/
 .dvc/cache/
 .dvc/tmp/
+
+
+
+# Local OpenCode skills
+.opencode/skills/
