@@ -9,47 +9,52 @@ stages:
       - configs/config.py
     outs:
       - data/train.json
-      - data/test.json
+      - data/val.json
+      - data/test_en2ar.json
+      - data/test_ar2en.json
 
   train:
     cmd: llamafactory-cli train configs/train.yaml
     deps:
+      - configs/train.yaml
       - data/train.json
+      - data/val.json
       - data/dataset_info.json
-    params:
-      - configs/train.yaml:
-          - learning_rate
-          - num_train_epochs
-          - lora_rank
-          - cutoff_len
-          - per_device_train_batch_size
-          - gradient_accumulation_steps
-          - warmup_ratio
     outs:
-      - saves/exp1/lora:
+      - saves/exp10/lora:
           cache: false
 
-  predict:
-    cmd: llamafactory-cli train configs/eval.yaml
+  predict_en2ar:
+    cmd: llamafactory-cli train configs/eval_en2ar.yaml
     deps:
-      - data/test.json
+      - configs/eval_en2ar.yaml
+      - data/test_en2ar.json
       - data/dataset_info.json
-      - saves/exp1/lora
-    params:
-      - configs/eval.yaml:
-          - cutoff_len
-          - max_new_tokens
-          - per_device_eval_batch_size
-          - do_sample
+      - saves/exp10/lora
     outs:
-      - saves/exp1/eval/generated_predictions.jsonl:
+      - saves/exp10/eval_en2ar/generated_predictions.jsonl:
+          cache: false
+
+  predict_ar2en:
+    cmd: llamafactory-cli train configs/eval_ar2en.yaml
+    deps:
+      - configs/eval_ar2en.yaml
+      - data/test_ar2en.json
+      - data/dataset_info.json
+      - saves/exp10/lora
+    outs:
+      - saves/exp10/eval_ar2en/generated_predictions.jsonl:
           cache: false
 
   metrics:
     cmd: python -m src.evaluate
     deps:
       - src/evaluate.py
-      - saves/exp1/eval/generated_predictions.jsonl
+      - configs/config.py
+      - saves/exp10/eval_en2ar/generated_predictions.jsonl
+      - saves/exp10/eval_ar2en/generated_predictions.jsonl
     metrics:
-      - saves/exp1/eval/metrics.json:
+      - saves/exp10/eval_en2ar/metrics.json:
+          cache: false
+      - saves/exp10/eval_ar2en/metrics.json:
           cache: false
