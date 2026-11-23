@@ -6,8 +6,6 @@ import sacrebleu
 
 from configs.config import get_settings
 
-PREDICTIONS_ar = get_settings().PREDICTIONS_AR
-PREDICTIONS_en = get_settings().PREDICTIONS_EN
 
 
 def load_data(filepath):
@@ -34,8 +32,10 @@ def write_metrics(prediction_path, bleu, chrf):
 
 
 def main():
+    settings = get_settings()
+
     # 1. English -> Egyptian Arabic
-    p_ar, r_ar = load_data(PREDICTIONS_ar)
+    p_ar, r_ar = load_data(settings.PREDICTIONS_AR)
     p_ar_norm = [arnorm(p) for p in p_ar]
     r_ar_norm = [arnorm(r) for r in r_ar]
 
@@ -48,7 +48,7 @@ def main():
     print(f"  chrF++ : {chrf_ar:.2f}")
 
     # 2. Egyptian Arabic -> English
-    p_en, r_en = load_data(PREDICTIONS_en)
+    p_en, r_en = load_data(settings.PREDICTIONS_EN)
 
     bleu_en = sacrebleu.corpus_bleu(p_en, [r_en]).score
     chrf_en = sacrebleu.corpus_chrf(p_en, [r_en], word_order=2).score
@@ -59,8 +59,8 @@ def main():
     print(f"  chrF++ : {chrf_en:.2f}")
     print("=" * 45)
 
-    write_metrics(PREDICTIONS_ar, bleu_ar, chrf_ar)
-    write_metrics(PREDICTIONS_en, bleu_en, chrf_en)
+    write_metrics(settings.PREDICTIONS_AR, bleu_ar, chrf_ar)
+    write_metrics(settings.PREDICTIONS_EN, bleu_en, chrf_en)
 
 
 if __name__ == "__main__":
