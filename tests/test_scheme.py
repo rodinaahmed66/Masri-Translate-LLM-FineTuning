@@ -7,8 +7,16 @@ AR2EN = "to english"
 def test_alpaca_both_directions():
     ds = {"Arabic": ["ازيك"], "English": ["hello"]}
     by_input = {r["input"]: r for r in to_alpaca(ds, EN2AR, AR2EN)}
-    assert by_input["hello"] == {"instruction": EN2AR, "input": "hello", "output": "ازيك"}
-    assert by_input["ازيك"] == {"instruction": AR2EN, "input": "ازيك", "output": "hello"}
+    assert by_input["hello"] == {
+        "instruction": EN2AR,
+        "input": "hello",
+        "output": "ازيك",
+    }
+    assert by_input["ازيك"] == {
+        "instruction": AR2EN,
+        "input": "ازيك",
+        "output": "hello",
+    }
 
 
 def test_alpaca_multiple():
@@ -25,5 +33,8 @@ def test_alpaca_empty():
 
 
 def test_alpaca_is_deterministic():
-    ds = {"Arabic": [str(i) for i in range(20)], "English": [f"e{i}" for i in range(20)]}
+    ds = {
+        "Arabic": [str(i) for i in range(20)],
+        "English": [f"e{i}" for i in range(20)],
+    }
     assert to_alpaca(ds, EN2AR, AR2EN) == to_alpaca(ds, EN2AR, AR2EN)
