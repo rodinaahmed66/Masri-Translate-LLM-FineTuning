@@ -1,31 +1,44 @@
 model_name_or_path: Qwen/Qwen2.5-1.5B-Instruct
+
 stage: sft
 do_train: true
 finetuning_type: lora
-lora_rank: 32
+lora_rank: 64
+lora_alpha: 128
+lora_dropout: 0.1
 lora_target: all
+
 dataset: masri_mt_train
+eval_dataset: masri_mt_val
 dataset_dir: data
 template: qwen
-cutoff_len: 512
+cutoff_len: 1024
 preprocessing_num_workers: 4
-output_dir: saves/exp1/lora
-logging_steps: 10
-save_steps: 200
+
+output_dir: saves/exp10/lora
+logging_steps: 20
+save_steps: 400
 save_total_limit: 2
 plot_loss: true
+overwrite_output_dir: false
+report_to: wandb
+run_name: exp10-lr5.0e-4-2ep-2lang(v24)
+
 per_device_train_batch_size: 4
 gradient_accumulation_steps: 4
-learning_rate: 1.0e-4
+learning_rate: 2.0e-4
 num_train_epochs: 2
 lr_scheduler_type: cosine
-warmup_ratio: 0.1
+warmup_ratio: 0.05
+weight_decay: 0.01
+max_grad_norm: 1.0
 fp16: true
-val_size: 0.05
+
 per_device_eval_batch_size: 4
 eval_strategy: steps
-eval_steps: 600
-report_to: wandb
-run_name: exp1-qwen1.5b-lora-r32
+eval_steps: 400
+load_best_model_at_end: true
+metric_for_best_model: eval_loss
+
 push_to_hub: true
-hub_model_id: rodinaahmed30/qwen1.5b-masri-lora
+hub_model_id: rodinaahmed30/qwen1.5b-masri-2-5ways

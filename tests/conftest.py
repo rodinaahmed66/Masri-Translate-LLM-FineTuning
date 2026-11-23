@@ -11,5 +11,8 @@ def env(monkeypatch):
         "WANDB_API_KEY": "x",
         "PROJECT_NAME": "x",
         "HF_TOKEN": "x",
+        "VAL_SIZE": "0.03",
+        "PREDICTIONS_AR": "saves/exp10/eval_en2ar/generated_predictions.jsonl",
+        "PREDICTIONS_EN": "saves/exp10/eval_ar2en/generated_predictions.jsonl",
     }.items():
         monkeypatch.setenv(k, v)

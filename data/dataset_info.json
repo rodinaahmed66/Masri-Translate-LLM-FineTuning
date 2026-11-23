@@ -3,8 +3,16 @@
     "file_name": "train.json",
     "columns": {"prompt": "instruction", "query": "input", "response": "output"}
   },
-  "masri_mt_eval": {
-    "file_name": "test.json",
+  "masri_mt_eval_en2ar": {
+    "file_name": "test_en2ar.json",
     "columns": {"prompt": "instruction", "query": "input", "response": "output"}
-  }
+  },
+  "masri_mt_eval_ar2en": {
+    "file_name": "test_ar2en.json",
+    "columns": {"prompt": "instruction", "query": "input", "response": "output"}
+  },
+  "masri_mt_val": {
+  "file_name": "val.json",
+  "columns": {"prompt": "instruction", "query": "input", "response": "output"}
+}
 }
