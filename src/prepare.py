@@ -37,7 +37,7 @@ def main():
 
     train_rows = to_alpaca(train_ds, INSTR_EN2AR, INSTR_AR2EN)
     val_rows = to_alpaca(val_ds, INSTR_EN2AR, INSTR_AR2EN)
-    
+
     test_en2ar = [
         {"instruction": INSTR_EN2AR, "input": en, "output": ar}
         for en, ar in zip(test_ds["English"], test_ds["Arabic"])
