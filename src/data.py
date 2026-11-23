@@ -57,7 +57,7 @@ class DataLoader:
         for i, (en, ar) in enumerate(zip(dataset["English"], dataset["Arabic"])):
             key_en = DataLoader.key_en(en)
             key_ar = DataLoader.key_ar(ar) if ar is not None else None
-            if key_en in seen_en or  key_ar in seen_ar:
+            if key_en in seen_en or key_ar in seen_ar:
                 continue
 
             seen_en.add(key_en)
@@ -67,4 +67,3 @@ class DataLoader:
 
     def split(self, dataset: Dataset, test_size: float, seed: int = 42) -> DatasetDict:
         return dataset.train_test_split(test_size=test_size, seed=seed)
-
