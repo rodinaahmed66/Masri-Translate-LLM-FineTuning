@@ -1,7 +1,7 @@
 import random
 
 
-def to_alpaca(dataset,INSTR_EN2AR,INSTR_AR2EN):
+def to_alpaca(dataset, INSTR_EN2AR, INSTR_AR2EN):
     rows = []
     for ar, en in zip(dataset["Arabic"], dataset["English"]):
         rows.append(
@@ -11,7 +11,7 @@ def to_alpaca(dataset,INSTR_EN2AR,INSTR_AR2EN):
                 "output": ar,
             }
         )
-    
+
         rows.append(
             {
                 "instruction": INSTR_AR2EN,
