@@ -74,13 +74,17 @@ def test_prepare_multiple_sound_tags():
 
 
 def test_split():
-    ds = Dataset.from_dict({"English": [str(i) for i in range(100)], "Arabic": ["ا"] * 100})
+    ds = Dataset.from_dict(
+        {"English": [str(i) for i in range(100)], "Arabic": ["ا"] * 100}
+    )
     splits = DataLoader("x").split(ds, 0.1)
     assert len(splits["test"]) == 10
 
 
 def test_split_two_times():
-    ds = Dataset.from_dict({"English": [str(i) for i in range(100)], "Arabic": ["ا"] * 100})
+    ds = Dataset.from_dict(
+        {"English": [str(i) for i in range(100)], "Arabic": ["ا"] * 100}
+    )
     loader = DataLoader("x")
     train_test = loader.split(ds, 0.1)
     train_val = loader.split(train_test["train"], 0.1)
@@ -90,7 +94,9 @@ def test_split_two_times():
 
 
 def test_split_is_reproducible():
-    ds = Dataset.from_dict({"English": [str(i) for i in range(100)], "Arabic": ["ا"] * 100})
+    ds = Dataset.from_dict(
+        {"English": [str(i) for i in range(100)], "Arabic": ["ا"] * 100}
+    )
     a = DataLoader("x").split(ds, 0.1, seed=1)["test"]["English"]
     b = DataLoader("x").split(ds, 0.1, seed=1)["test"]["English"]
     assert a == b
