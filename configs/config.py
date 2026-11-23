@@ -14,7 +14,6 @@ class Settings(BaseSettings):
     TEST_SIZE: float
     PREDICTIONS_AR: str
     PREDICTIONS_EN: str
-    
 
 
 def get_settings():
