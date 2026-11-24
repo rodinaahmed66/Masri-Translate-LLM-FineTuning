@@ -29,6 +29,10 @@ metrics = [
   "jieba",
   "nltk",
 ]
+judge = [
+  "deepeval==4.3.5",
+  "openai>=1.0",
+]
 serve = [
   "fastapi>=0.110",
   "uvicorn[standard]>=0.29",
