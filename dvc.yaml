@@ -58,3 +58,20 @@ stages:
           cache: false
       - saves/exp10/eval_ar2en/metrics.json:
           cache: false
+
+  judge:
+    cmd: python -m src.judge fine
+    deps:
+      - src/judge.py
+      - src/LLM_as_Judge/JudgeModel.py
+      - src/LLM_as_Judge/__init__.py
+      - src/LLM_as_Judge/metrics.py
+      - configs/config.py
+      - saves/exp10/eval_en2ar/generated_predictions.jsonl
+      - saves/exp10/eval_ar2en/generated_predictions.jsonl
+    outs:
+      - saves/judge/judge_scores_fine.jsonl:
+          cache: false
+    metrics:
+      - saves/judge/judge_summary_fine.json:
+          cache: false
