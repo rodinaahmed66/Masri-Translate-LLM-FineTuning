@@ -65,6 +65,13 @@ def test_prepare():
     }
 
 
+def test_prepare_none_values():
+    assert DataLoader("x").data_prepare({"Arabic": None, "English": None}) == {
+        "Arabic": "",
+        "English": "",
+    }
+
+
 def test_prepare_multiple_sound_tags():
     row = {"Arabic": "[music] ازيك [sfx]", "English": "[noise] Hello World [echo]"}
     assert DataLoader("x").data_prepare(row) == {
